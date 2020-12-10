@@ -5,12 +5,16 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField]
-    private float _speed = 4f; // use _name for private variables
+    private float _speed = 6f; // use _name for private variables
     [SerializeField]
     private GameObject _laser;
     [SerializeField]
     private float _fireRate = 0.5f;
     private float _canFire = -1f;
+
+    [SerializeField]
+    private int _lives = 3;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +32,7 @@ public class Player : MonoBehaviour
         {
             FireLaser();
         }
+
 
     }
 
@@ -76,11 +81,22 @@ public class Player : MonoBehaviour
 
     void FireLaser()
     {
-        Debug.Log("Space was pressed");
+        //Debug.Log("Space was pressed");
         //every 0.5 of a second will allow us to fire
         _canFire = Time.time + _fireRate;
         //takes position of player and adds (0,0.8f,0) so the laser comes out from the front
         Instantiate(_laser, transform.position + new Vector3(0,0.8f,0), Quaternion.identity);
 
+    }
+
+    public void Damage()
+    {
+        _lives -= 1;
+        Debug.Log(_lives);
+
+        if(_lives < 1)
+        {
+            Destroy(this.gameObject);
+        }
     }
 }
